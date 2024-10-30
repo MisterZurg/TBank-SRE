@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oncall
+  labels:
+    app.kubernetes.io/name: oncall
+    app.kubernetes.io/component: web
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: oncall
+      app.kubernetes.io/component: web
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: oncall
+        app.kubernetes.io/component: web
+    spec:
+      containers:
+      - name: oncall
+        image: oncall:latest
+        env:
+        - name: DOCKER_DB_BOOTSTRAP
+          value: "1"
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8080
+        livenessProbe:
+          httpGet:
+            path: /healthcheck
+            port: 8080
+          failureThreshold: 1
+          initialDelaySeconds: 15
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /healthcheck
+            port: 8080
+          failureThreshold: 1
+          initialDelaySeconds: 15
+          periodSeconds: 10
+        startupProbe:
+          httpGet:
+            path: /healthcheck
+            port: 8080
+          failureThreshold: 10
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        volumeMounts:
+        - name: oncall-config
+          mountPath: /home/oncall/config/config.yaml
+          subPath: oncall.conf
+          readOnly: true
+      volumes:
+      - name: oncall-config
+        configMap:
+          name: oncall
