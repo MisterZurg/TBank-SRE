@@ -1,20 +1,5 @@
 # Домашнее задание №5 "Метрики. Prometheus"
 
-## 1 задание
-Домашнее задание по разворачиванию Prometheus:
-- можно выполнить на локальном компьютере используя docker-compose, просто развернув prometheus из образа официальной документации https://prometheus.io/docs/prometheus/latest/installation/
-- можно выполнив команды представленные ниже на виртуальной машине
-
-> [!INFO]
-> Я просто скопипатил себя же [TBank URL-Shortener/prometheus](build/prometheus/prometheus.yml)
-
-```sh
-make up
-```
-
-```sh
-make down
-```
 ## 2 задание
 Включить метрики Oncall и добавить их targetом в Prometheus.
 

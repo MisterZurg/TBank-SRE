@@ -1,0 +1,27 @@
+### docker compose for 5.1
+services:
+  tbank-prometheus:
+    image: prom/prometheus:latest
+    container_name: tbank-prometheus
+    #restart: unless-stopped
+    volumes:
+      - ./build/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    # - prometheus_data:/prometheus
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--web.console.libraries=/etc/prometheus/console_libraries"
+      - "--web.console.templates=/etc/prometheus/consoles"
+      - "--web.enable-lifecycle"
+    expose: # only be accessible to linked services
+      - "9090:9090"
+      - "9091:9091"
+    ports: # Ports will be exposed to the host machine
+      - "9090:9090"
+      - "9091:9091"
+    networks:
+      - tbank-network
+
+networks:
+  tbank-network:
+    driver: bridge
