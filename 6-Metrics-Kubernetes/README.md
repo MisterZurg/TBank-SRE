@@ -15,17 +15,19 @@ kubectl create namespace kube-state-metrics
 # Создаем deployment используюя официальный YAML
 kubectl apply -f kube-state-metrics-deployment.yaml
 
-kube-state-metrics-deployment.yaml 0.82 КБ
 # применяем файл с сервисом kube-state-metrics-service.yaml
 kubectl apply -f kube-state-metrics-service.yaml
-kube-state-metrics-service.yaml 0.28 КБ
+
 # Добавляем публикацию на ingress
 kubectl apply -f kube-state-metrics-ingress.yaml
-kube-state-metrics-ingress.yaml 0.44 КБ
-# Добавляем IP адресс в /etc/hosts (Пример для Linux)
-echo "$(minikube ip) kube-state-metrics.local" | sudo tee -a /etc/hosts
-Посмотрите полученные метрики
 
+# Добавляем IP адресс в /etc/hosts (Пример для Linux)
+# echo "$(minikube ip) kube-state-metrics.local" | sudo tee -a /etc/hosts
+echo "127.0.0.1 kube-state-metrics.local" | sudo tee -a /etc/hosts
+
+```
+Посмотрите полученные метрики
+```sh
 curl http://kube-state-metrics.local/
 ```
 
@@ -35,12 +37,19 @@ curl http://kube-state-metrics.local/
 - продемонстрировать метрики кластера в UI Prometheus
 - Изучить получаемые от кластера метрики и поделиться теми которые вас заинтересовали.
 
+> [!IMPORTANT]
+> Я воспользовался готовым решением развернув [Prometheus Operator](https://prometheus-operator.dev/)
 
-Предоставить видеоматериалы или скриншоты результата.
+```sh
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
 
+helm install kps prometheus-community/kube-prometheus-stack
 
+# Прокинем порт, на под с прометеем чтобы постучаться на localhost:9090
+kubectl port-forward prometheus-kps-kube-prometheus-stack-prometheus-0 9090
+```
 
 Критерии оценки:
-
 2 бала - метрики настроены и работают
 2 бала - за раскрытие исследования метрик
