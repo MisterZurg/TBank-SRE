@@ -11,12 +11,27 @@ scrape_configs:
     # scheme defaults to 'http'.
     scheme: "http"
     # metrics_path defaults to '/metrics'
-    metrics_path: "/"
+    # metrics_path: "tbank/metrics"
 
     # Override the global default and scrape targets from this job every 5 seconds.
     scrape_interval: 15s
     scrape_timeout: 15s
 
     static_configs:
+      - targets: ["localhost:9090"]
+
+  - job_name: "tbank-oncall-notifier"
+    # Override the global default and scrape targets from this job every 5 seconds.
+    # Get "http://oncall.local:80/metrics": context deadline exceeded
+    scrape_interval: 30s
+    scrape_timeout: 30s
+    metrics_path: "/metrics"
+
+    static_configs:
       - targets:
-          - "oncall.metrics.local:9091"
+          [
+            "oncall.local",
+            "192.168.58.2",
+            "host.docker.internal",
+            "oncall:9091",
+          ]

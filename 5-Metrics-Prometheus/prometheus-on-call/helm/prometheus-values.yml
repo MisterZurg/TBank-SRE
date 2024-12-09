@@ -1,0 +1,37 @@
+# # Global configuration
+# global:
+#   scrape_interval: 15s # Default scrape interval
+#   evaluation_interval: 15s # Default evaluation interval
+
+# # Server configuration
+# server:
+#   enabled: true
+#   service:
+#     enabled: true
+#     type: ClusterIP
+#     port: 9090
+
+#   securityContext:
+#     fsGroup: 0
+#     runAsGroup: 0
+#     runAsNonRoot: false
+#     runAsUser: 0
+
+# Define the configuration for Prometheus server
+serverFiles:
+  prometheus.yml:
+    # Prometheus configuration file
+    # global:
+    #   scrape_interval: 15s
+    #   scrape_timeout: 30s
+
+    scrape_configs:
+      - job_name: "tbank-oncall-notifier"
+        static_configs:
+          - targets:
+              - oncall.local:9091
+              - oncall.local
+              - localhost
+              - localhost:9091
+              - oncall
+              - oncall:9091

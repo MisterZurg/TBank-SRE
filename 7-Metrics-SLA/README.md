@@ -1,4 +1,7 @@
 # Домашнее задание №7 "Метрики. SLA."
+
+TODO FIX lab 5
+
 ## 1,2 задания
 
 Написать пробер на Oncall и настроить сбор метрик в Prometheus с пробера
@@ -53,3 +56,6 @@ pod OnCall
 
 ## Dependencies
 [nim-metrics](https://github.com/status-im/nim-metrics) — Nim metrics client library supporting the Prometheus monitoring toolkit, StatsD and Carbon
+
+
+https://artifacthub.io/packages/helm/traefik/traefik/32.1.1?modal=values

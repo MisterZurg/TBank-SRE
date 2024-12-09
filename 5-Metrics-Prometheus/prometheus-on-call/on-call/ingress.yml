@@ -10,6 +10,13 @@ spec:
     - host: oncall.local
       http:
         paths:
+          - path: "/metrics"
+            pathType: Prefix
+            backend:
+              service:
+                name: oncall
+                port:
+                  number: 9091
           - path: "/(.*)"
             pathType: Prefix
             backend:
@@ -17,13 +24,3 @@ spec:
                 name: oncall
                 port:
                   number: 8080
-    - host: oncall.metrics.local
-      http:
-        paths:
-          - path: "/(.*)"
-            pathType: Prefix
-            backend:
-              service:
-                name: oncall-notifier
-                port:
-                  number: 9091

@@ -10,7 +10,14 @@ data:
       port: 8080
     debug: True
     oncall_host: oncall.local
+
+    # Меняем тип сбора метрик с dummy на prometheus
     metrics: prometheus
+
+    prometheus:
+      oncall-notifier: # ключ для приложения
+        server_port: 9091
+
     db:
       conn:
         kwargs:
@@ -87,7 +94,3 @@ data:
     slack_instance: foobar
     header_color: '#3a3a3a'
     team_managed_message: 'Managed team - this team is managed via API'
-
-    prometheus:
-      oncall-notifier:
-        server_port: 9091

@@ -13,15 +13,20 @@ down:
 
 
 # Problem 5.2
-.PHONY: deploy destroy metrics
+.PHONY: deploy destroy metrics metrics-up
 deploy:
 	minikube start
 
-metrics:
-	docker run \
-        -p 9090:9090 \
-        -v ./prometheus-on-call/build/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml \
-        prom/prometheus
+helm-metrics:
+	helm install -f ./prometheus-on-call/helm/prometheus-values.yml prometheus prometheus-community/prometheus
+
+helm-down:
+	helm uninstall prometheus
 
 destroy:
 	minikube delete --all
+
+
+# prometheus-server-5f75d65fbc-8j84g
+# kubectl port-forward prometheus-server 9090
+F

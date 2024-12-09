@@ -53,3 +53,8 @@ kubectl port-forward prometheus-kps-kube-prometheus-stack-prometheus-0 9090
 Критерии оценки:
 2 бала - метрики настроены и работают
 2 бала - за раскрытие исследования метрик
+
+
+TODO поднять kube-state-metrics/
+- 1) Дать права сервис акку
+- 2) Либо поднять версию
