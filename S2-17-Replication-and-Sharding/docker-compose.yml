@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  postgres-master:
+    build: ./master
+    container_name: postgres-master
+    environment:
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres_master_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - postgres-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  postgres-replica1:
+    build: ./replica
+    container_name: postgres-replica1
+    environment:
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres_replica1_data:/var/lib/postgresql/data
+    entrypoint: ["/entrypoint.sh"]
+    depends_on:
+      postgres-master:
+        condition: service_healthy
+    networks:
+      - postgres-network
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'   # Ограничение CPU
+          memory: 256M  # Ограничение памяти
+
+  postgres-replica2:
+    build: ./replica
+    container_name: postgres-replica2
+    environment:
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres_replica2_data:/var/lib/postgresql/data
+    entrypoint: ["/entrypoint.sh"]
+    depends_on:
+      postgres-master:
+        condition: service_healthy
+    networks:
+      - postgres-network
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'   # Ограничение CPU
+          memory: 256M  # Ограничение памяти
+
+volumes:
+  postgres_master_data:
+  postgres_replica1_data:
+  postgres_replica2_data:
+
+networks:
+  postgres-network:
+    driver: bridge

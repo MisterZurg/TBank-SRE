@@ -1,0 +1,15 @@
+services:
+  grafana:
+    image: grafana/grafana-oss
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+
+  prometheus:
+    image: prom/prometheus
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      # - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./test-series.txt:/prometheus/test-series.txt
